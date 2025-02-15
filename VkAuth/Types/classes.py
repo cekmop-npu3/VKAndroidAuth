@@ -1,7 +1,6 @@
 from JSObject import JSObject, Field, annotation
 from typing import Optional
 from datetime import datetime
-from aiohttp import CookieJar
 
 from .raw import *
 from VkAuth.Enums.enums import VerificationMethods
@@ -17,7 +16,6 @@ __all__ = (
     "SignupParams",
     "CheckOTP",
     "AccessToken",
-    "Credentials",
     "VerMethod"
 )
 
@@ -147,6 +145,16 @@ class Error(metaclass=JSObject[ErrorDict]):
     errorType: Optional[str] = Field("error_type", default=None)
     errorText: Optional[str] = Field("error_text", default=None)
     requestParams: Optional[list[Param]] = Field("request_params", default=None, base=lambda params: [Param(param) for param in params])
+    redirectUri: Optional[str] = Field("redirect_uri", default=None)
+    captchaSid: Optional[int] = Field("captcha_sid", default=None)
+    isRefreshEnabled: Optional[bool] = Field("is_refresh_enabled", default=None)
+    captchaImg: Optional[str] = Field("captcha_img", default=None)
+    captchaTs: Optional[float] = Field("captcha_ts", default=None)
+    captchaAttempt: Optional[int] = Field("captcha_attempt", default=None)
+    captchaRatio: Optional[float] = Field("captcha_ratio", default=None)
+    captchaHeight: Optional[int] = Field("captcha_height", default=None)
+    captchaWidth: Optional[int] = Field("captcha_width", default=None)
+    isSoundCaptchaAvailable: Optional[bool] = Field("is_sound_captcha_available", default=None)
 
     @annotation
     def __init__(
@@ -156,7 +164,17 @@ class Error(metaclass=JSObject[ErrorDict]):
         requestParams: Optional[list[Param]] = None,
         errorText: Optional[str] = None,
         error: Optional[str] = None,
-        errorType: Optional[str] = None
+        errorType: Optional[str] = None,
+        redirectUri: Optional[str] = None,
+        captchaSid: Optional[int] = None,
+        isRefreshEnabled: Optional[bool] = None,
+        captchaImg: Optional[str] = None,
+        captchaTs: Optional[float] = None,
+        captchaAttempt: Optional[int] = None,
+        captchaRatio: Optional[float] = None,
+        captchaHeight: Optional[int] = None,
+        captchaWidth: Optional[int] = None,
+        isSoundCaptchaAvailable: Optional[bool] = None
     ) -> None:
         pass
 
@@ -276,26 +294,6 @@ class AccessToken(metaclass=JSObject[AccessTokenDict]):
     def __init__(
         self,
         data: AccessTokenDict
-    ) -> None:
-        pass
-
-
-class Credentials(metaclass=JSObject[CredentialsDict]):
-    accessToken: AccessToken = Field(base=AccessToken)
-    cookies: CookieJar = Field()
-
-    @annotation
-    def __init__(
-        self,
-        accessToken: AccessToken,
-        cookies: CookieJar
-    ) -> None:
-        pass
-
-    @annotation
-    def __init__(
-        self,
-        data: CredentialsDict
     ) -> None:
         pass
 

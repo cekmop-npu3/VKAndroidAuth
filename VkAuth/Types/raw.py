@@ -1,5 +1,4 @@
 from typing import TypedDict, NotRequired
-from aiohttp import CookieJar
 
 __all__ = (
     "AnonymTokenDict",
@@ -12,7 +11,6 @@ __all__ = (
     "SignupParamsDict",
     "CheckOTPDict",
     "AccessTokenDict",
-    "CredentialsDict",
     "VerMethodDict"
 )
 
@@ -22,14 +20,14 @@ class AnonymTokenDict(TypedDict):
     expired_at: int
 
 
-class NextStepDict(TypedDict):
+class NextStepDict(TypedDict, total=False):
     verification_method: str
     has_another_verification_methods: bool
     external_id: NotRequired[str]
     service_code: NotRequired[int]
 
 
-class ValidateAccountDict(TypedDict):
+class ValidateAccountDict(TypedDict, total=False):
     flow_name: str
     flow_names: list[str]
     is_email: NotRequired[bool]
@@ -39,7 +37,7 @@ class ValidateAccountDict(TypedDict):
     sid: str
 
 
-class SendOTPDict(TypedDict):
+class SendOTPDict(TypedDict, total=False):
     status: int
     sid: str
     code_length: int
@@ -51,16 +49,26 @@ class ParamDict(TypedDict):
     value: str
 
 
-class ErrorDict(TypedDict):
+class ErrorDict(TypedDict, total=False):
     error_code: int
     error_msg: str
     error_text: NotRequired[str]
     error: NotRequired[str]
     error_type: NotRequired[str]
     request_params: NotRequired[list[ParamDict]]
+    redirect_uri: NotRequired[str]
+    captcha_sid: NotRequired[int]
+    is_refresh_enabled: NotRequired[bool]
+    captcha_img: NotRequired[str]
+    captcha_ts: NotRequired[float]
+    captcha_attempt: NotRequired[int]
+    captcha_ratio: NotRequired[float]
+    captcha_height: NotRequired[int]
+    captcha_width: NotRequired[int]
+    is_sound_captcha_available: NotRequired[bool]
 
 
-class ProfileDict(TypedDict):
+class ProfileDict(TypedDict, total=False):
     first_name: str
     last_name: str
     has_2fa: bool
@@ -74,7 +82,7 @@ class SignupParamsDict(TypedDict):
     birth_date_max: str
 
 
-class CheckOTPDict(TypedDict):
+class CheckOTPDict(TypedDict, total=False):
     auth_hash: str
     sid: str
     profile_exist: bool
@@ -85,7 +93,7 @@ class CheckOTPDict(TypedDict):
     signup_params: SignupParamsDict
 
 
-class AccessTokenDict(TypedDict):
+class AccessTokenDict(TypedDict, total=False):
     access_token: str
     expires_in: int
     user_id: int
@@ -96,12 +104,7 @@ class AccessTokenDict(TypedDict):
     webview_access_token_expires_in: str
 
 
-class CredentialsDict(TypedDict):
-    accessToken: AccessTokenDict
-    cookies: CookieJar
-
-
-class VerMethodDict(TypedDict):
+class VerMethodDict(TypedDict, total=False):
     can_fallback: bool
     info: str
     name: str

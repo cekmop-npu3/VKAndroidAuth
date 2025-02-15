@@ -2,7 +2,7 @@ from typing import Type, is_typeddict, Optional, Any, Self, TypeVar, TypedDict, 
 from collections.abc import Callable, Hashable
 from types import FunctionType
 
-__all__ = "annotation", "Field", "JSObject", "isTypedDict"
+__all__ = "annotation", "Field", "JSObject"
 
 
 Obj = TypeVar("Obj", bound=Callable[..., None])
@@ -16,7 +16,7 @@ def annotation(obj: Obj) -> Obj:
 
 
 def isTypedDict(obj: dict, typedDict: Type) -> bool:
-    return isinstance(obj, dict) and is_typeddict(typedDict) and set(getattr(typedDict, "__required_keys__")).issubset(obj.keys())
+    return isinstance(obj, dict) and is_typeddict(typedDict) and set(obj).symmetric_difference(getattr(typedDict, "__annotations__")).issubset(getattr(typedDict, "__optional_keys__"))
 
 
 class Field(Generic[Instance, Owner]):
